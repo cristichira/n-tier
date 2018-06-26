@@ -1,0 +1,76 @@
+//group 'com.ps'
+//version '1.0-SNAPSHOT'
+//
+//apply plugin: 'java'
+//
+//sourceCompatibility = 1.8
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+//}
+//
+//allprojects {
+//    apply plugin: 'idea'
+//    idea {
+//        module {
+//            outputDir file('build/classes/java/main')
+//            testOutputDir file('build/classes/test')
+//        }
+//    }
+//    if(project.convention.findPlugin(JavaPluginConvention)) {
+//        // Change the output directory for the main and test source sets back to the old path
+//        sourceSets.main.output.classesDir = new File(buildDir, "classes/main")
+//        sourceSets.test.output.classesDir = new File(buildDir, "classes/test")
+//    }
+//}
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.1.RELEASE'
+        aptVersion = '0.15'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("net.ltgt.gradle:gradle-apt-plugin:${aptVersion}")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'net.ltgt.apt'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.mapstruct:mapstruct-jdk8:1.2.0.Final')
+        compile('org.mapstruct:mapstruct-processor:1.2.0.Final')
+        apt 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+        compile('mysql:mysql-connector-java:5.1.6')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    }
+
+    group = 'com.ps'
+    version = '1.0-SNAPSHOT'
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}

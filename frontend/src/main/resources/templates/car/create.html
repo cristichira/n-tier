@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Create</title>
+    <th:block th:replace="fragments/head :: head">...</th:block>
+</head>
+<body>
+<div th:replace="fragments/menu :: menu">
+    menu to replace
+</div>
+
+
+<!--body of this view, here goes the content-->
+<div class="container">
+    <form th:action="@{/car/save}" method="post" th:object="${car}">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label th:for="name">Car Name</label>
+            <input type="text" class="form-control" th:field="*{name}" placeholder="Car Name">
+        </div>
+        <div class="form-group">
+            <label th:for="owner">Owner</label>
+            <select id="owner" th:field="*{owner}" class="form-control">
+                <option th:each="user : ${users}"
+                        th:value="${user.id}" th:text="${user.username}"
+                        th:selected="${user.id} == *{owner}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label th:for="drivers">Drivers</label>
+            <select multiple th:field="*{drivers}" class="form-control">
+                <option th:each="user : ${users}"
+                        th:value="${user.id}" th:text="${user.username}"></option>
+            </select>
+        </div>
+        <button class="btn" type="submit">Save</button>
+    </form>
+</div>
+
+
+<!--footer to insert in this view-->
+<div th:replace="fragments/footer :: footer">
+    footer to replace
+</div>
+</body>
+</html>

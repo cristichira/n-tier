@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Car list</title>
+    <th:block th:replace="fragments/head :: head">...</th:block>
+</head>
+<body>
+<div th:replace="fragments/menu :: menu">
+    menu to replace
+</div>
+
+
+<!--body of this view, here goes the content-->
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <a class="btn btn-info" th:href="${#mvc.url('CC#getCreate').build()}">Create new car</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${cars.isEmpty()}">
+            <td colspan="2">no cars</td>
+        </tr>
+        <tr th:unless="${cars.isEmpty()}" th:each="car : ${cars}">
+            <td>[[${car.id}]]</td>
+            <td>
+                <a th:href="${#mvc.url('CC#details').arg(0, car.id).build()}">
+                    [[${car.name}]]
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-info" th:href="${#mvc.url('CC#getEdit').arg(0, car.id).build()}">Edit
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--footer to insert in this view-->
+<div th:replace="fragments/footer :: footer">
+    footer to replace
+</div>
+</body>
+</html>
